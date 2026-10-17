@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="bn">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#176b52"><link rel="manifest" href="manifest.json">
+<title>জমা-খরচ</title><link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header><div><h1>জমা-খরচ</h1><p>আপনার ব্যক্তিগত হিসাব</p></div><button id="lockNow" class="headbtn">লক</button></header>
+<main id="app" hidden>
+<section class="summary">
+<div class="tile"><span>মোট জমা</span><strong id="totalIncome">₹০</strong></div>
+<div class="tile"><span>মোট খরচ</span><strong id="totalExpense">₹০</strong></div>
+<div class="tile balance"><span>বর্তমান ব্যালেন্স</span><strong id="balance">₹০</strong></div>
+</section>
+<section class="panel">
+<h2 id="formTitle">নতুন হিসাব যোগ করুন</h2>
+<form id="entryForm">
+<input id="editId" type="hidden">
+<div class="typeRow"><label><input type="radio" name="type" value="income" checked> জমা</label><label><input type="radio" name="type" value="expense"> খরচ</label></div>
+<label>টাকার পরিমাণ (₹)<input id="amount" type="number" min="0.01" step="0.01" placeholder="যেমন 500" required></label>
+<label>বিবরণ<input id="note" maxlength="100" placeholder="যেমন বেতন, বাজার খরচ" required></label>
+<label>ক্যাটাগরি<select id="category"><option>অন্যান্য</option><option>বেতন</option><option>ব্যবসা</option><option>বাজার</option><option>বাড়িভাড়া</option><option>যাতায়াত</option><option>বিল</option><option>চিকিৎসা</option><option>শিক্ষা</option><option>সঞ্চয়</option><option>জমা/সঞ্চয়</option></select></label>
+<label>তারিখ<input id="date" type="date" required></label>
+<div class="formBtns"><button class="primary" type="submit" id="saveBtn">হিসাব সেভ করুন</button><button class="secondary" type="button" id="cancelEdit" hidden>বাতিল</button></div>
+</form>
+</section>
+<section class="panel">
+<h2>রিপোর্ট</h2>
+<div class="filters reportFilters">
+<label>রিপোর্টের ধরন<select id="reportType"><option value="month">মাসিক রিপোর্ট</option><option value="year">বার্ষিক রিপোর্ট</option></select></label>
+<label id="monthWrap">মাস<select id="reportMonth"></select></label>
+<label id="yearWrap" hidden>বছর<select id="reportYear"></select></label>
+</div>
+<div class="reportGrid">
+<div><span>রিপোর্টে মোট জমা</span><strong id="reportIncome">₹০</strong></div>
+<div><span>রিপোর্টে মোট খরচ</span><strong id="reportExpense">₹০</strong></div>
+<div><span>নিট (জমা − খরচ)</span><strong id="reportNet">₹০</strong></div>
+</div>
+<button id="exportReport" class="secondary full">এই রিপোর্ট CSV ডাউনলোড</button>
+</section>
+<section class="panel">
+<div class="listHead"><h2>হিসাবের তালিকা</h2><button id="exportAll" class="secondary">সব হিসাব CSV</button></div>
+<input id="search" class="search" placeholder="বিবরণ বা ক্যাটাগরি দিয়ে খুঁজুন…">
+<div class="filters"><label>ধরন<select id="filterType"><option value="all">সব হিসাব</option><option value="income">শুধু জমা</option><option value="expense">শুধু খরচ</option></select></label><label>মাস<select id="filterMonth"><option value="all">সব মাস</option></select></label></div>
+<div id="entries" class="entries"></div><p id="empty" class="empty">এখনও কোনো হিসাব যোগ করা হয়নি।</p>
+</section>
+<section class="panel security">
+<h2>নিরাপত্তা সেটিংস</h2>
+<p>PIN/পাসওয়ার্ড পরিবর্তন করতে বর্তমান PIN দিয়ে যাচাই করতে হবে।</p>
+<button id="changePin" class="secondary full">PIN/পাসওয়ার্ড পরিবর্তন</button>
+</section>
+<p class="notice">ডেটা এই ডিভাইসের ব্রাউজারে সেভ হয়। ব্রাউজারের ডেটা মুছে গেলে হিসাব হারাতে পারে—নিয়মিত CSV ব্যাকআপ রাখুন। PIN লক সাধারণ ডিভাইস-লক; এটি সার্ভার-ভিত্তিক এনক্রিপশন নয়।</p>
+</main>
+<section id="lockScreen" class="lockScreen">
+<div class="lockCard"><div class="lockIcon">🔐</div><h2 id="lockTitle">জমা-খরচ আনলক করুন</h2><p id="lockText">আপনার PIN/পাসওয়ার্ড লিখুন</p>
+<form id="unlockForm"><input id="pinInput" type="password" autocomplete="current-password" placeholder="PIN / পাসওয়ার্ড" required><button class="primary" type="submit">আনলক</button></form>
+<div id="setupArea" hidden><p>প্রথমবার ব্যবহারের জন্য একটি PIN/পাসওয়ার্ড তৈরি করুন (কমপক্ষে ৪ অক্ষর/সংখ্যা)।</p><form id="setupForm"><input id="newPin" type="password" autocomplete="new-password" placeholder="নতুন PIN / পাসওয়ার্ড" minlength="4" required><input id="confirmPin" type="password" autocomplete="new-password" placeholder="আবার লিখুন" minlength="4" required><button class="primary" type="submit">PIN সেট করুন</button></form></div>
+<p id="lockError" class="error" role="alert"></p>
+</div></section>
+<footer>জমা-খরচ • ব্যক্তিগত হিসাব</footer>
+<script src="app.js"></script>
+</body></html>
